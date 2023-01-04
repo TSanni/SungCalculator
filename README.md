@@ -32,7 +32,6 @@ Here is what the project currently can NOT do:
 
 - Get history of calculations
 - Parenthesis button does not function
-- Negative button does not function
 - Unit conversion button does not function
 - Currently no unit conversion capabilities 
 

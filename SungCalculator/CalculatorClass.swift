@@ -53,20 +53,25 @@ class CalclutaorClass: ObservableObject {
         }
     }
     
-    func addSymbol(symbol: String) {
+    private func addSymbol(symbol: String) {
         if let lastCharacter = textInput.last {
             
             if symbol == "%" {
+                if lastCharacterIsSymbol {
+                    textInput.removeLast()
+                    textInput.append(symbol)
+                    lastCharacterIsSymbol = false
+                    return
+                }
+                
                 lastCharacterIsSymbol = false
                 textInput.append(symbol)
-                getResult()
+                lastCharacterIsSymbol = false
+//                getResult()
                 return
             }
             
-//            if symbol == "." && textInput.contains(".") {
-//                print("Already have a decimal")
-//                return
-//            }
+
 
             if lastCharacter == symbol.last {
                 print("INVALID INPUT")
@@ -74,6 +79,8 @@ class CalclutaorClass: ObservableObject {
                 return
             }
             
+            
+            //if the last entry is a symbol, then replace it with the new symbol button press
             if !textInput.isEmpty && lastCharacterIsSymbol {
                 textInput.removeLast()
                 textInput.append(symbol)
@@ -91,15 +98,31 @@ class CalclutaorClass: ObservableObject {
     }
     
     
-    func handleNegativeButton() {
+    private func handleNegativeButton() {
+        if textInput.isEmpty {
+            textInput.append("-")
+            lastCharacterIsSymbol = true
+            return
+        }
         
+        if lastCharacterIsSymbol {
+            textInput.append("-")
+            lastCharacterIsSymbol = true
+            return
+        }
+        
+        if textInput.count == 1 && textInput.last == "-" {
+            textInput.removeLast()
+            lastCharacterIsSymbol = false
+            return
+        }
     }
     
     func handleParenthesis() {
         
     }
     
-    func handleDecimalButton() {
+    private func handleDecimalButton() {
         
         if possibleToAddDecimal && textInput.isEmpty {
             textInput.append("0.")
@@ -118,7 +141,7 @@ class CalclutaorClass: ObservableObject {
     }
     
     
-    func formatNumberToAddCommas(num: String) -> String? {
+    private func formatNumberToAddCommas(num: String) -> String? {
         let formatter = NumberFormatter()
 
         // Set up the NumberFormatter to use a thousands separator
@@ -173,14 +196,14 @@ class CalclutaorClass: ObservableObject {
     }
     
     func updateRunningResult() {
-//        print("GET RESULTS")
+        print("GET RESULTS")
         if textInput.isEmpty {
             runningResult = ""
             return
         }
         
         
-        if textInput.last == "+" || textInput.last == "×" || textInput.last == "÷" || textInput.last == "%" {
+        if textInput.last == "+" || textInput.last == "×" || textInput.last == "÷" || textInput.last == "-" {
             print("LAST ELEMENT IS A SYMBOL")
             lastCharacterIsSymbol = true
             runningResult = ""
@@ -199,7 +222,6 @@ class CalclutaorClass: ObservableObject {
         
         if textInputForExpression.last != "." {
             let expression = NSExpression(format: textInputForExpression)
-            
             
             let result = expression.toFloatingPoint().expressionValue(with: nil, context: nil) as? Double
             
@@ -222,7 +244,7 @@ class CalclutaorClass: ObservableObject {
         
     }
     
-    func formatResult(result: Double) -> String {
+    private func formatResult(result: Double) -> String {
         if (result.truncatingRemainder(dividingBy: 1) == 0) {
             return String(format: "%.0f", result)
         } else {
@@ -243,6 +265,7 @@ class CalclutaorClass: ObservableObject {
         //If the textInput string is not empty, then remove element from the stack
         if !textInput.isEmpty {
             if textInput.last == "." { possibleToAddDecimal = true}
+            
             textInput.removeLast()
             //After removing element from the stack, if the next element is not a symbol, lastCharacterIsSymbol is set to false 
             if textInput.last != "+" || textInput.last != "×" || textInput.last != "÷" || textInput.last != "%" {

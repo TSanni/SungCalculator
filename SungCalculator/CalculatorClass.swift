@@ -29,7 +29,7 @@ class CalclutaorClass: ObservableObject {
     func checkSymbol(sym: ButtonType) {
         switch sym {
             case .parenthesis:
-                handleNegativeButton()
+                handleParenthesis()
 //                addSymbol(symbol: sym.rawValue)
             case .percent:
                 addSymbol(symbol: sym.rawValue)

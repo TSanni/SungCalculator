@@ -30,7 +30,6 @@ class CalclutaorClass: ObservableObject {
         switch sym {
             case .parenthesis:
                 handleParenthesis()
-//                addSymbol(symbol: sym.rawValue)
             case .percent:
                 addSymbol(symbol: sym.rawValue)
             case .divide:
@@ -43,10 +42,8 @@ class CalclutaorClass: ObservableObject {
                 addSymbol(symbol: sym.rawValue)
             case .decimal:
                 handleDecimalButton()
-//                addSymbol(symbol: sym.rawValue)
             case .negative:
                 handleNegativeButton()
-//                addSymbol(symbol: sym.rawValue)
             default:
                 break
                 
@@ -174,7 +171,6 @@ class CalclutaorClass: ObservableObject {
         }
         if lastCharacterIsSymbol {
             print("CALLING getResult()... INVALID ENTRY BECAUSE LAST CHARACTER IS A SYMBOL... RETURNING..")
-//            print("INVALID FORMAT USED")
             return
         }
         var textInputForExpression = textInput.replacingOccurrences(of: "×", with: "*")

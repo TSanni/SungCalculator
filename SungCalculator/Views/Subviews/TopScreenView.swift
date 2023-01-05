@@ -7,72 +7,38 @@
 
 import SwiftUI
 
-
-
-
-
-
 struct TopScreenView: View {
     @State private var placeholder: String = "708"
     @EnvironmentObject var calculator: CalclutaorClass
     @State private var animateLine = false
-
-
+    
     var body: some View {
         VStack(alignment: .trailing) {
             
             HStack(spacing: 0) {
                 
-//                TextField("", text: $calculator.textInput)
-//                    .font(.largeTitle)
-//                    .multilineTextAlignment(.trailing)
-//                    .keyboardType(.decimalPad)
-
+                Text("\(calculator.textInput)")
+                    .font(.largeTitle)
+                    .addLine
+                
 //                MyTextField(currentText: $calculator.textInput, placeHolder: $placeholder)
 //                    .font(.largeTitle)
 //                    .multilineTextAlignment(.trailing)
-
-                
-                Text("\(calculator.textInput)")
-                    .font(.largeTitle)
-                
-                LineView()
-                    .stroke(lineWidth: 3)
-                    .frame(width: 7, height: 50)
-                    .foregroundColor(.blue)
-                    .opacity(animateLine ? 1 : 0)
-                    .animation(.linear(duration: 0.5).repeatForever(autoreverses: true), value: animateLine)
-
             }
-            
-            
-
-
-            
+   
             Spacer()
+            
+            
             VStack(alignment: .trailing, spacing: 40) {
                 Text(calculator.runningResult)
                     .font(.title)
 
                 HStack(spacing: 30) {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "clock")
-                    }
+                    OptionButtons(image: "clock", action: historyButtonAction)
                     
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "ruler")
-                    }
-
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "x.squareroot")
-
-                    }
+                    OptionButtons(image: "ruler", action: conversionButtonAction)
+                    
+                    OptionButtons(image: "x.squareroot", action: moreCalculationsButtonAction)
 
                     Spacer()
                     
@@ -96,6 +62,35 @@ struct TopScreenView: View {
             animateLine.toggle()
         }
         
+    }
+    
+    
+    
+    
+    func historyButtonAction() {
+        
+    }
+    
+    func conversionButtonAction() {
+        
+    }
+    
+    func moreCalculationsButtonAction() {
+        
+    }
+}
+
+struct OptionButtons: View {
+    
+    let image: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Image(systemName: image)
+        }
     }
 }
 
@@ -129,34 +124,36 @@ struct TopScreenView_Previews: PreviewProvider {
 //    }
 //}
 
-struct MyTextField: UIViewRepresentable {
-    @Binding var currentText: String
-    @Binding var placeHolder: String
-    
-    func makeUIView(context: Context) -> UITextField {
-        let textField = UITextField()
-        textField.inputView = UIView() // hiding keyboard
-        textField.inputAccessoryView = UIView() // hiding keyboard toolbar
-        textField.placeholder = placeHolder
-        textField.textColor = nil
-        textField.font = UIFont.systemFont(ofSize: 30)
-        textField.textAlignment = .right
-        textField.delegate = context.coordinator
-        return textField
-    }
-    
-    func updateUIView(_ textField: UITextField, context: Context) {
-        textField.text = currentText
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(text: $currentText)
-    }
-    
-    class Coordinator: NSObject, UITextFieldDelegate {
-        @Binding var text: String
-        init(text: Binding<String>) {
-            self._text = text
-        }
-    }
-}
+//struct MyTextField: UIViewRepresentable {
+//    @Binding var currentText: String
+//    @Binding var placeHolder: String
+//
+//    func makeUIView(context: Context) -> UITextField {
+//        let textField = UITextField()
+//        textField.inputView = UIView() // hiding keyboard
+//        textField.inputAccessoryView = UIView() // hiding keyboard toolbar
+//        textField.placeholder = placeHolder
+//        textField.textColor = nil
+//        textField.font = UIFont.systemFont(ofSize: 30)
+//        textField.textAlignment = .right
+//        textField.delegate = context.coordinator
+//        return textField
+//    }
+//
+//    func updateUIView(_ textField: UITextField, context: Context) {
+//        textField.text = currentText
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        Coordinator(text: $currentText)
+//    }
+//
+//    class Coordinator: NSObject, UITextFieldDelegate {
+//        @Binding var text: String
+//        init(text: Binding<String>) {
+//            self._text = text
+//        }
+//    }
+//}
+
+

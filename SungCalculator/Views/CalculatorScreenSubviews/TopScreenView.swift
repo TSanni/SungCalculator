@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct TopScreenView: View {
-    @State private var placeholder: String = "708"
     @EnvironmentObject var calculator: CalclutaorClass
-    @State private var animateLine = false
+    
     
     var body: some View {
         VStack(alignment: .trailing) {
@@ -20,6 +19,7 @@ struct TopScreenView: View {
                 Text("\(calculator.textInput)")
                     .font(.largeTitle)
                     .addLine
+                    .minimumScaleFactor(0.5)
                 
 //                MyTextField(currentText: $calculator.textInput, placeHolder: $placeholder)
 //                    .font(.largeTitle)
@@ -32,8 +32,11 @@ struct TopScreenView: View {
             VStack(alignment: .trailing, spacing: 40) {
                 Text(calculator.runningResult)
                     .font(.title)
+                    .minimumScaleFactor(0.5)
+
 
                 HStack(spacing: 30) {
+                    //Three option buttons on the left
                     OptionButtons(image: "clock", action: historyButtonAction)
                     
                     OptionButtons(image: "ruler", action: conversionButtonAction)
@@ -42,6 +45,7 @@ struct TopScreenView: View {
 
                     Spacer()
                     
+                    //Backspace button on the right
                     Button {
                         calculator.removeLast()
                         calculator.updateRunningResult()
@@ -58,9 +62,7 @@ struct TopScreenView: View {
                 .padding(.vertical)
             }
         }
-        .onAppear {
-            animateLine.toggle()
-        }
+
         
     }
     
@@ -68,7 +70,9 @@ struct TopScreenView: View {
     
     
     func historyButtonAction() {
-        
+        withAnimation {
+            calculator.showHistoryView.toggle()
+        }
     }
     
     func conversionButtonAction() {
@@ -81,7 +85,8 @@ struct TopScreenView: View {
 }
 
 struct OptionButtons: View {
-    
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.dateAdded, order: .reverse)], animation: .easeInOut) var history: FetchedResults<History>
+
     let image: String
     let action: () -> Void
     
@@ -91,12 +96,14 @@ struct OptionButtons: View {
         } label: {
             Image(systemName: image)
         }
+        .disabled(history.isEmpty && image == "clock" ? true : false) //if there is no history, disable button
     }
 }
 
 struct TopScreenView_Previews: PreviewProvider {
     static var previews: some View {
         TopScreenView()
+            .previewDevice("iPhone 11 Pro Max")
             .environmentObject(CalclutaorClass())
 //            .previewLayout(.sizeThatFits)
     }

@@ -100,10 +100,8 @@ struct ButtonView: View {
                 calculator.addInteger(num: buttonType.rawValue)
                 calculator.checkSymbol(sym: buttonType)
                 calculator.updateRunningResult()
-                print("Can add decimal: \(calculator.possibleToAddDecimal)")
                 action()
 
-                
             } label: {
                 Text(buttonType.rawValue)
                     .frame(width: screenWidth * 0.12, height: screenWidth * 0.12)

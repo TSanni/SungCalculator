@@ -20,5 +20,9 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(CalclutaorClass())
+        
+        ContentView()
+            .previewDevice("iPad Pro (12.9-inch) (6th generation)")
+            .environmentObject(CalclutaorClass())
     }
 }

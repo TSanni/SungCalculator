@@ -6,22 +6,24 @@
 //
 
 import Foundation
+import SwiftUI
 
 class CalclutaorClass: ObservableObject {
     @Published var textInput: String = ""
-    @Published var runningResult: String = ""
+    @Published var runningResult: String = " " //Set runningResult to " " around this class to prevent the screen jump
+    @Published var longEntry: String = ""
+    @Published var showHistoryView = false
+
     private var lastCharacterIsSymbol = false
     private var newNumberInString = true
-     var possibleToAddDecimal = true
-    
+    private var possibleToAddDecimal = true
+    @Environment(\.managedObjectContext) var moc
+
 
     func addInteger(num: String) {
         if let number = Int(num) {
             textInput.append("\(number)")
             lastCharacterIsSymbol = false
-            //Maybe add number formatter here?
-//            formatNumberToAddCommas(num: textInput)
-
         }
     }
     
@@ -69,7 +71,6 @@ class CalclutaorClass: ObservableObject {
             }
             
 
-
             if lastCharacter == symbol.last {
                 print("INVALID INPUT")
                 lastCharacterIsSymbol = true
@@ -85,9 +86,7 @@ class CalclutaorClass: ObservableObject {
                 possibleToAddDecimal = true
                 return
             }
-            
-
-            
+                        
             textInput.append(symbol)
             lastCharacterIsSymbol = true
             possibleToAddDecimal = true
@@ -162,15 +161,16 @@ class CalclutaorClass: ObservableObject {
 
     }
     
-    
-    func getResult() {
+    func getResult(completion: @escaping(_ success: Bool) -> ()) {
         
         if textInput.isEmpty {
             print("CALLING getResult()... textInput IS EMPTY: RETURNING..")
+            completion(false)
             return
         }
         if lastCharacterIsSymbol {
             print("CALLING getResult()... INVALID ENTRY BECAUSE LAST CHARACTER IS A SYMBOL... RETURNING..")
+            completion(false)
             return
         }
         var textInputForExpression = textInput.replacingOccurrences(of: "×", with: "*")
@@ -178,7 +178,7 @@ class CalclutaorClass: ObservableObject {
         textInputForExpression = textInputForExpression.replacingOccurrences(of: "%", with: "*0.01")
         
         if textInputForExpression.last != "." {
-            
+            longEntry = textInput
             let expression = NSExpression(format: textInputForExpression)
             let result = expression.toFloatingPoint().expressionValue(with: nil, context: nil) as! Double
             
@@ -187,14 +187,15 @@ class CalclutaorClass: ObservableObject {
 
             
             textInput = resultString
-            
+            completion(true)
+       
         }
     }
     
     func updateRunningResult() {
         print("GET RESULTS")
         if textInput.isEmpty {
-            runningResult = ""
+            runningResult = " "
             return
         }
         
@@ -202,14 +203,14 @@ class CalclutaorClass: ObservableObject {
         if textInput.last == "+" || textInput.last == "×" || textInput.last == "÷" || textInput.last == "-" {
             print("LAST ELEMENT IS A SYMBOL")
             lastCharacterIsSymbol = true
-            runningResult = ""
+            runningResult = " "
             return
         }
         
         
         if lastCharacterIsSymbol {
             print("INVALID FORMAT USED")
-            runningResult = ""
+            runningResult = " "
             return
         }
         var textInputForExpression = textInput.replacingOccurrences(of: "×", with: "*")
@@ -254,6 +255,7 @@ class CalclutaorClass: ObservableObject {
     func clearAll() {
         textInput.removeAll()
         runningResult.removeAll()
+        runningResult = " "
         possibleToAddDecimal = true
     }
     

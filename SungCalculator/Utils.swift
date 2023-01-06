@@ -18,6 +18,6 @@ extension Color {
 
 extension Text {
     var addLine: Text {
-        self + Text("|").font(.largeTitle).foregroundColor(.blue)
+        self + Text("|").font(.system(size: 40)).foregroundColor(.blue)
     }
 }

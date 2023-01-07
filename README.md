@@ -23,14 +23,13 @@ to bring one of the best calculators to iOS!
 - (Current) Support for light and dark modes
 - (Current) Support for basic calculations 
 - (Future) Support for unit conversion
-- (Future) Support for calculations history
+- (Current) Support for calculations history
  
 
 ## Current State
 
 Here is what the project currently can NOT do:
 
-- Get history of calculations
 - Parenthesis button does not function
 - Unit conversion button does not function
 - Currently no unit conversion capabilities 

@@ -14,9 +14,10 @@ to bring one of the best calculators to iOS!
 
 
 
-## Screenshots
+## Demo
+![Simulator Screen Recording - iPhone 11 Pro Max - 2023-02-21 at 18 29 53](https://user-images.githubusercontent.com/50508424/220489936-de0f05ee-dff6-4d7d-9d60-ced20400c1aa.gif)
 
-[![Screenshot-2022-12-29-at-5-05-13-AM.png](https://i.postimg.cc/vZmKHRSP/Screenshot-2022-12-29-at-5-05-13-AM.png)](https://postimg.cc/bsKg35Pb)
+
 
 
 ## Current and future features
@@ -26,18 +27,13 @@ to bring one of the best calculators to iOS!
 - (Current) Support for calculations history
  
 
-## Current State
-
-Here is what the project currently can NOT do:
-
-- Parenthesis button does not function
-- Unit conversion button does not function
-- Currently no unit conversion capabilities 
 
 ## Future
 
 Over time, updates will be made to the project and features will be added.
 This readme will be updated to reflect those changes. 
-## Screenshot
 
-[![Screenshot-2022-12-29-at-5-23-47-AM.png](https://i.postimg.cc/fbTyWfG7/Screenshot-2022-12-29-at-5-23-47-AM.png)](https://postimg.cc/PC9T2YrN)
+## Screenshot
+[![Screenshot-2022-12-29-at-5-05-13-AM.png](https://i.postimg.cc/vZmKHRSP/Screenshot-2022-12-29-at-5-05-13-AM.png)](https://postimg.cc/bsKg35Pb)
+
+

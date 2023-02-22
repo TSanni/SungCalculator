@@ -10,7 +10,6 @@ import SwiftUI
 struct TopScreenView: View {
     @EnvironmentObject var calculator: CalclutaorClass
     
-    
     var body: some View {
         VStack(alignment: .trailing) {
             
@@ -21,11 +20,8 @@ struct TopScreenView: View {
                     .addLine
                     .minimumScaleFactor(0.5)
                 
-//                MyTextField(currentText: $calculator.textInput, placeHolder: $placeholder)
-//                    .font(.largeTitle)
-//                    .multilineTextAlignment(.trailing)
             }
-   
+
             Spacer()
             
             
@@ -68,18 +64,17 @@ struct TopScreenView: View {
     
     
     
-    
-    func historyButtonAction() {
+    private func historyButtonAction() {
         withAnimation {
             calculator.showHistoryView.toggle()
         }
     }
     
-    func conversionButtonAction() {
+    private func conversionButtonAction() {
         
     }
     
-    func moreCalculationsButtonAction() {
+    private func moreCalculationsButtonAction() {
         
     }
 }

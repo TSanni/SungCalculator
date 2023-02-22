@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct LineView: Shape {
+    
+    var lineHeight: CGFloat
+    
+    var animatableData: Double {
+        get { lineHeight }
+        set { lineHeight = newValue }
+    }
+    
+    
     func path(in rect: CGRect) -> Path {
         
         let midCenter = CGPoint(x: rect.midX, y: rect.minY)
@@ -15,7 +24,7 @@ struct LineView: Shape {
         var path = Path()
         
         path.move(to: midCenter)
-        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY * lineHeight))
 //        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
         
         
@@ -27,7 +36,7 @@ struct LineView: Shape {
 
 struct LineView_Previews: PreviewProvider {
     static var previews: some View {
-        LineView()
+        LineView(lineHeight: 1)
             .stroke()
     }
 }

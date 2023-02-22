@@ -12,8 +12,6 @@ struct BottomView: View {
     @Environment(\.managedObjectContext) var moc
     let screenSize = UIScreen.main.bounds
     @Environment(\.colorScheme) var colorScheme
-
-
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -21,7 +19,7 @@ struct BottomView: View {
                 HStack {
                     ButtonView(buttonType: .clear) { calculator.clearAll() }
                     Spacer()
-                    ButtonView(buttonType: .parenthesis) { }
+                    ButtonView(buttonType: .squared) { }
                     Spacer()
                     ButtonView(buttonType: .percent) { }
                     Spacer()
@@ -69,8 +67,11 @@ struct BottomView: View {
                                 historyObject.dateAdded = Date.now
                                 historyObject.result = calculator.textInput
                                 historyObject.entry = calculator.longEntry
-                                
-                                try? moc.save()
+                                do {
+                                    try moc.save()
+                                } catch {
+                                    print("Error getting result and saving it: \(error)")
+                                }
                             }
                         }
                                             
@@ -88,12 +89,9 @@ struct BottomView: View {
                     .frame(maxHeight: .infinity)
                     .background {
                         colorScheme == .dark ? Color.black : Color.white
-
                     }
-                    .transition(.scale)
-                    .animation(.easeOut, value: calculator.showHistoryView)
+                    .transition(AnyTransition.move(edge: .leading))
                     .zIndex(1)
-                
             }
         }
     }
@@ -102,6 +100,7 @@ struct BottomView: View {
 struct BottomView_Previews: PreviewProvider {
     static var previews: some View {
         BottomView()
+            .previewDevice("iPhone 11 Pro Max")
             .environmentObject(CalclutaorClass())
     }
 }

@@ -17,9 +17,8 @@ struct HistoryView: View {
     
     
     var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack {
             ScrollView {
-                
                 
                 HStack {
                     LazyVStack(alignment: .trailing, spacing: 30) {

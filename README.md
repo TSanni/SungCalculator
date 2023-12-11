@@ -1,7 +1,7 @@
 
-# SungWeather
+# SungCalculator
 
-SungWeather is an iOS project inspired by Samsung's calculator app
+SungCalculator is an iOS project inspired by Samsung's calculator app
 which is currently not available for iOS. In this project, the UI
 is constructed in a way to resembled Samsung's app as much as possible.
 

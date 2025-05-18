@@ -8,111 +8,82 @@
 import SwiftUI
 
 struct MainScreen: View {
-    @StateObject var calculator = CalclutaorClass.shared
     @State private var textfieldText = "2+2+2+2+7"
-    let screenHeight = UIScreen.main.bounds.height
+    @State private var answer = "answer/running total"
+    let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 4)
+    
+    let buttonLayout: [ButtonType] = [
+        .clear, .squared, .percent, .divide,
+        .seven, .eight, .nine, .multiply,
+        .four, .five, .six, .subtract,
+        .one, .two, .three, .add,
+        .negative, .zero, .decimal, .equal
+    ]
+    
+    
     var body: some View {
-        VStack {
-            VStack(alignment: .trailing) {
-                TextField("Enter text", text: $calculator.textInput)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundStyle(.primary)
-                    .font(.largeTitle)
-                    .padding(.bottom, 50)
-                
-                Text("Running total/answer")
-                    .foregroundStyle(.secondary)
-                    .font(.title2)
-                    .padding(.bottom, 50)
-                
-                HStack {
-                    HStack(spacing: 50) {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "clock")
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "ruler")
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "x.squareroot")
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "delete.backward")
-                    }
-                    .tint(.green)
-                }
-                .tint(.secondary)
-                .font(.title)
-            }
-            
-            Divider()
-            
+        GeometryReader { geo in
             VStack {
-                HStack {
-                    ButtonView2(buttonType: .clear)
+                VStack(alignment: .trailing) {
+                    TextField("Enter text", text: $textfieldText)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(.primary)
+                        .disabled(true)
+                        .font(.largeTitle)
+                        .padding(.bottom, 30)
+                    
                     Spacer()
-                    ButtonView2(buttonType: .squared)
-                    Spacer()
-                    ButtonView2(buttonType: .percent)
-                    Spacer()
-                    ButtonView2(buttonType: .divide)
+                    
+                    TextField("Running total/answer", text: $answer)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(.secondary)
+                        .disabled(true)
+                        .font(.title2)
+                        .padding(.bottom, 30)
+                    
+                    HStack {
+                        HStack(spacing: 50) {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "clock")
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "ruler")
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "x.squareroot")
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "delete.backward")
+                        }
+                        .tint(.green)
+                    }
+                    .tint(.secondary)
+                    .font(.title2)
                 }
                 
-                HStack {
-                    ButtonView2(buttonType: .seven)
-                    Spacer()
-                    ButtonView2(buttonType: .eight)
-                    Spacer()
-                    ButtonView2(buttonType: .nine)
-                    Spacer()
-                    ButtonView2(buttonType: .multiply)
-                }
+                Divider()
+                    .padding(.vertical)
                 
-                HStack {
-                    ButtonView2(buttonType: .four)
-                    Spacer()
-                    ButtonView2(buttonType: .five)
-                    Spacer()
-                    ButtonView2(buttonType: .six)
-                    Spacer()
-                    ButtonView2(buttonType: .subtract)
-                }
-                
-                HStack {
-                    ButtonView2(buttonType: .one)
-                    Spacer()
-                    ButtonView2(buttonType: .two)
-                    Spacer()
-                    ButtonView2(buttonType: .three)
-                    Spacer()
-                    ButtonView2(buttonType: .add)
-                }
-                
-                HStack {
-                    ButtonView2(buttonType: .negative)
-                    Spacer()
-                    ButtonView2(buttonType: .zero)
-                    Spacer()
-                    ButtonView2(buttonType: .decimal)
-                    Spacer()
-                    ButtonView2(buttonType: .equal)
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(buttonLayout, id: \.self) { type in
+                        ButtonView2(buttonType: type, geoProxy: geo)
+                    }
                 }
             }
-            .environmentObject(calculator)
         }
         .padding()
     }
@@ -121,23 +92,19 @@ struct MainScreen: View {
 
 struct ButtonView2: View {
     @Environment(\.colorScheme) var colorScheme
-    let screenWidth = UIScreen.main.bounds.width
     var buttonType: ButtonType
     let haptics = UINotificationFeedbackGenerator()
-    @EnvironmentObject var calculator: CalclutaorClass
-
+    let geoProxy: GeometryProxy
+    
     var body: some View {
-        
         Button {
             self.haptics.notificationOccurred(.success)
-            calculator.textInput.append(buttonType.rawValue)
         } label: {
             Text(buttonType.rawValue)
-                .frame(width: screenWidth * 0.12, height: screenWidth * 0.12)
-                .padding()
                 .foregroundColor(buttonType.getForegroundColor)
-                .clipShape(Circle())
-                .background{
+                .frame(width: geoProxy.size.width * 0.12, height: geoProxy.size.width * 0.12)
+                .padding()
+                .background {
                     if buttonType == .equal {
                         Circle().fill(Color.green)
                     } else {

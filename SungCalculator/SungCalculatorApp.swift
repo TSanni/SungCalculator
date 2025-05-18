@@ -12,7 +12,7 @@ struct SungCalculatorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScreen()
         }
     }
 }

@@ -37,16 +37,10 @@ struct ButtonView: View {
         
         Button {
             self.haptics.notificationOccurred(.success)
-            
-            calculator.addInteger(num: buttonType.rawValue)
-            calculator.checkSymbol(sym: buttonType)
-            calculator.updateRunningResult()
-            action()
-            
+            calculator.handleButtonInput(buttonInput: buttonType)
         } label: {
             Text(buttonType.rawValue)
                 .frame(width: screenWidth * 0.12, height: screenWidth * 0.12)
-            //                    .frame(width: geo.size.width * 0.10, height: geo.size.height * 0.0)
                 .padding()
                 .foregroundColor(buttonType.getForegroundColor)
                 .clipShape(Circle())
@@ -65,9 +59,9 @@ struct ButtonView: View {
 struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            //            Color.black
             ButtonView(buttonType: .equal) { }
-                .environmentObject(CalclutaorClass())
+                .previewDevice("iPhone 11 Pro Max")
+                .environmentObject(CalclutaorClass.shared)
         }
         
         ContentView()

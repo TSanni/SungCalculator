@@ -32,6 +32,62 @@ enum ButtonType: String {
     case negative = "±"
     case equal = "="
     
+    case historyButton = "clock"
+    case rulerButton = "ruler"
+    case squareRootButton = "x.squareroot"
+    case deleteButton = "delete.backward"
+    
+    
+    var isInt: Bool {
+        switch self {
+        case .clear:
+            return false
+        case .squared:
+            return false
+        case .percent:
+            return false
+        case .divide:
+            return false
+        case .multiply:
+            return false
+        case .subtract:
+            return false
+        case .add:
+            return false
+        case .equal:
+            return false
+        case .historyButton:
+            return false
+        case .rulerButton:
+            return false
+        case .squareRootButton:
+            return false
+        case .deleteButton:
+            return false
+        case .decimal:
+            return false
+        case .negative:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    var isOperation: Bool {
+        switch self {
+        case .divide:
+            return true
+        case .multiply:
+            return true
+        case .subtract:
+            return true
+        case .add:
+            return true
+        default:
+            return false
+        }
+    }
+    
     
     var getForegroundColor: Color? {
         switch self {

@@ -9,13 +9,10 @@ import SwiftUI
 
 @main
 struct SungCalculatorApp: App {
-    @StateObject private var dataController = PersistenceController()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-
         }
     }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct BottomView: View {
     @EnvironmentObject var calculator: CalclutaorClass
-    @Environment(\.managedObjectContext) var moc
     let screenSize = UIScreen.main.bounds
     @Environment(\.colorScheme) var colorScheme
     
@@ -17,7 +16,7 @@ struct BottomView: View {
         ZStack(alignment: .bottomLeading) {
             VStack {
                 HStack {
-                    ButtonView(buttonType: .clear) { calculator.clearAll() }
+                    ButtonView(buttonType: .clear) { }
                     Spacer()
                     ButtonView(buttonType: .squared) { }
                     Spacer()
@@ -59,30 +58,12 @@ struct BottomView: View {
                     Spacer()
                     ButtonView(buttonType: .decimal) { }
                     Spacer()
-                    ButtonView(buttonType: .equal) {
-                        
-                        calculator.getResult { success in
-                            if success {
-                                let historyObject = History(context: moc)
-                                historyObject.dateAdded = Date.now
-                                historyObject.result = calculator.textInput
-                                historyObject.entry = calculator.longEntry
-                                do {
-                                    try moc.save()
-                                } catch {
-                                    print("Error getting result and saving it: \(error)")
-                                }
-                            }
-                        }
-                                            
-                    }
+                    ButtonView(buttonType: .equal) { }
                 }
             }
             .padding(.top)
             .zIndex(0)
 
-            
-            
             if calculator.showHistoryView {
                 HistoryView()
                     .frame(width: screenSize.width * 0.70)
@@ -101,6 +82,6 @@ struct BottomView_Previews: PreviewProvider {
     static var previews: some View {
         BottomView()
             .previewDevice("iPhone 11 Pro Max")
-            .environmentObject(CalclutaorClass())
+            .environmentObject(CalclutaorClass.shared)
     }
 }

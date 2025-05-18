@@ -9,38 +9,40 @@ import SwiftUI
 
 struct HistoryView: View {
     @EnvironmentObject var calculator: CalclutaorClass
-    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var persistence: PersistenceController
     @Environment(\.colorScheme) var colorScheme
-    
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.dateAdded, order: .reverse)], animation: .easeInOut) var history: FetchedResults<History>
-    
-    
     
     var body: some View {
         VStack {
-            ScrollView {
-                
-                HStack {
-                    LazyVStack(alignment: .trailing, spacing: 30) {
-                        ForEach(history) { item in
-                            VStack(alignment: .trailing, spacing: 10) {
-                                Text(item.unwrappedEntry)
-                                    .font(.subheadline)
-                                Text(item.unwrappedResult)
-                                    .font(.headline)
-                                    .foregroundColor(.green)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    HStack {
+                        LazyVStack(alignment: .trailing, spacing: 30) {
+                            ForEach(persistence.savedEntities, id: \.dateAdded) { item in
+                                VStack(alignment: .trailing, spacing: 10) {
+                                    Text(item.entry ?? "No entry")
+                                        .font(.subheadline)
+                                    Text(item.result ?? "No result")
+                                        .font(.headline)
+                                        .foregroundColor(.green)
+                                }
+                                .id(item.dateAdded)
                             }
                         }
+                        .padding(.trailing)
+                        
+                        Divider()
                     }
-                    .padding(.trailing)
-                    
-                    Divider()
+
                 }
-                
+                .onAppear {
+                    proxy.scrollTo(persistence.savedEntities.last?.dateAdded)
+                }
             }
             
             Button {
-                handleDeleteAllHistoryButton()
+                calculator.toggleHistoryView()
+                persistence.deleteFruit()
             } label: {
                 Text("Clear History")
                     .foregroundColor(colorScheme == .dark ? .white : .black)
@@ -52,27 +54,7 @@ struct HistoryView: View {
                     }
             }
             .padding(.horizontal)
-
         }
-    }
-    
-    
-    func handleDeleteAllHistoryButton() {
-        
-        for i in history {
-            moc.delete(i)
-        }
-        withAnimation {
-            calculator.showHistoryView = false
-        }
-        
-        do {
-            try moc.save()
-        } catch {
-            print("Error deleting all calculation history")
-            return
-        }
-
     }
 }
 
@@ -80,7 +62,8 @@ struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
         HistoryView()
             .previewDevice("iPhone 11 Pro Max")
-            .environmentObject(CalclutaorClass())
+            .environmentObject(CalclutaorClass.shared)
+            .environmentObject(PersistenceController.shared)
         
     }
 }

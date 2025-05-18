@@ -37,8 +37,6 @@ struct UnitConverterScreen: View {
 
                             }
                         }
-
-//                        UnitButtons(option: option, highlightedId: $highlightedID, pickerSelction: $pickerSelection)
                     }
                 }
             }

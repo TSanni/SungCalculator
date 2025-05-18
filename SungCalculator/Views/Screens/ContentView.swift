@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var calculator = CalclutaorClass()
+    @StateObject var calculator = CalclutaorClass.shared
+    @StateObject var persistence = PersistenceController.shared
     
     var body: some View {
         CalculatorView()
             .environmentObject(calculator)
+            .environmentObject(persistence)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(CalclutaorClass())
-        
-        ContentView()
-            .previewDevice("iPad Pro (12.9-inch) (6th generation)")
-            .environmentObject(CalclutaorClass())
+            .environmentObject(CalclutaorClass.shared)
     }
 }

@@ -13,7 +13,7 @@ struct CalculatorView: View {
     
     var body: some View {
         VStack {
-            TopScreenView()
+            TopView()
             Divider()
             BottomView()
         }
@@ -25,7 +25,7 @@ struct CalculatorView_Previews: PreviewProvider {
     static var previews: some View {
         CalculatorView()
             .previewDevice("iPhone 11 Pro Max")
-            .environmentObject(CalclutaorClass())
+            .environmentObject(CalclutaorClass.shared)
         
     }
 }

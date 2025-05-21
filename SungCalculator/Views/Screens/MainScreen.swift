@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import MathParser
+class Calculator: ObservableObject {
+    @Published var textInput = "textInput"
+    @Published var runningTotal = "runningTotal"
+    
+    static let shared = Calculator()
+    
+    private init() { }
+    
+}
 
 struct MainScreen: View {
-    @State private var textfieldText = "2+2+2+2+7"
-    @State private var answer = "answer/running total"
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 4)
+    @StateObject var calculator: Calculator = Calculator.shared
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 4)
     
-    let buttonLayout: [ButtonType] = [
+    private let buttonLayout: [ButtonType] = [
         .clear, .squared, .percent, .divide,
         .seven, .eight, .nine, .multiply,
         .four, .five, .six, .subtract,
@@ -25,7 +34,7 @@ struct MainScreen: View {
         GeometryReader { geo in
             VStack {
                 VStack(alignment: .trailing) {
-                    TextField("Enter text", text: $textfieldText)
+                    TextField("Enter text", text: $calculator.textInput)
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(.primary)
                         .disabled(true)
@@ -34,7 +43,7 @@ struct MainScreen: View {
                     
                     Spacer()
                     
-                    TextField("Running total/answer", text: $answer)
+                    TextField("Running total/answer", text: $calculator.runningTotal)
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(.secondary)
                         .disabled(true)
@@ -83,6 +92,7 @@ struct MainScreen: View {
                         ButtonView2(buttonType: type, geoProxy: geo)
                     }
                 }
+                .environmentObject(calculator)
             }
         }
         .padding()
@@ -91,6 +101,7 @@ struct MainScreen: View {
 
 
 struct ButtonView2: View {
+    @EnvironmentObject var calculator: Calculator
     @Environment(\.colorScheme) var colorScheme
     var buttonType: ButtonType
     let haptics = UINotificationFeedbackGenerator()

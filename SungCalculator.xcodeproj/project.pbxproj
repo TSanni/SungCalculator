@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8357C7902C39CC2C003FCAF5 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8357C78F2C39CC2C003FCAF5 /* TopView.swift */; };
 		839283EB2DD98A3900E1916C /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839283EA2DD98A3900E1916C /* MainScreen.swift */; };
+		839283EE2DDAF27000E1916C /* MathParser in Frameworks */ = {isa = PBXBuildFile; productRef = 839283ED2DDAF27000E1916C /* MathParser */; };
+		839283F02DDAF41200E1916C /* MathParser in Frameworks */ = {isa = PBXBuildFile; productRef = 839283EF2DDAF41200E1916C /* MathParser */; };
 		83B8B78E295988A400AF4ED3 /* SungCalculatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B8B78D295988A400AF4ED3 /* SungCalculatorApp.swift */; };
 		83B8B790295988A400AF4ED3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B8B78F295988A400AF4ED3 /* ContentView.swift */; };
 		83B8B792295988A700AF4ED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83B8B791295988A700AF4ED3 /* Assets.xcassets */; };
@@ -52,6 +54,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839283EE2DDAF27000E1916C /* MathParser in Frameworks */,
+				839283F02DDAF41200E1916C /* MathParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +202,9 @@
 				Base,
 			);
 			mainGroup = 83B8B781295988A400AF4ED3;
+			packageReferences = (
+				839283EC2DDAF27000E1916C /* XCRemoteSwiftPackageReference "DDMathParser" */,
+			);
 			productRefGroup = 83B8B78B295988A400AF4ED3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -447,6 +454,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		839283EC2DDAF27000E1916C /* XCRemoteSwiftPackageReference "DDMathParser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davedelong/DDMathParser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		839283ED2DDAF27000E1916C /* MathParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 839283EC2DDAF27000E1916C /* XCRemoteSwiftPackageReference "DDMathParser" */;
+			productName = MathParser;
+		};
+		839283EF2DDAF41200E1916C /* MathParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 839283EC2DDAF27000E1916C /* XCRemoteSwiftPackageReference "DDMathParser" */;
+			productName = MathParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		83E2D5D629675F8300DB1BBE /* History.xcdatamodeld */ = {

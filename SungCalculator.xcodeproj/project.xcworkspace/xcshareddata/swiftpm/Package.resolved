@@ -1,0 +1,15 @@
+{
+  "originHash" : "13d5f380a53f683f076e28e395dae5adf77add2b6d0f0a718268c6509a205a74",
+  "pins" : [
+    {
+      "identity" : "ddmathparser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davedelong/DDMathParser.git",
+      "state" : {
+        "revision" : "0a159109e2393c3e1db4e2b638009c82e6650b4d",
+        "version" : "3.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

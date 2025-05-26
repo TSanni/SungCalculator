@@ -62,14 +62,11 @@ final class SungCalculatorTests: XCTestCase {
             return
         }
         
-        vm.textInput = "a"
-        vm.arrayOfButtonTypes = [.add]
-        
         // When
+        vm.handleButtonPressed(buttonType: .one)
         vm.handleButtonPressed(buttonType: .deleteButton)
         
         // Then
-        
         XCTAssert(vm.textInput.isEmpty)
         XCTAssert(vm.arrayOfButtonTypes.isEmpty)
     }
@@ -81,18 +78,154 @@ final class SungCalculatorTests: XCTestCase {
             return
         }
         
-        vm.textInput = "2 + 2"
-        vm.arrayOfButtonTypes = [.two, .add, .two]
-        vm.runningTotal = "4"
-        
         // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .add)
+        vm.handleButtonPressed(buttonType: .one)
         vm.handleButtonPressed(buttonType: .clear)
-        
+
         // Then
-        
         XCTAssert(vm.textInput.isEmpty)
         XCTAssert(vm.arrayOfButtonTypes.isEmpty)
         XCTAssert(vm.runningTotal.isEmpty)
     }
+    
+    func test_CalculatorViewModel_handleOperationButtonPressed_shouldNotUpdateTextInputOrRunningTotal() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .add)
+        
+        // Then
+        XCTAssertEqual(vm.textInput, "")
+        XCTAssertEqual(vm.arrayOfButtonTypes, [])
+        XCTAssertEqual(vm.runningTotal, "")
+        
+    }
+    
+    func test_CalculatorViewModel_handleOperationButtonPressed_shouldUpdateTextInputAndArrayOfButtonTypes() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .add)
 
+        // Then
+        XCTAssertEqual(vm.textInput, "1+")
+        XCTAssertEqual(vm.arrayOfButtonTypes, [.one, .add])
+    }
+
+    
+    func test_CalculatorViewModel_handleEqualsButtonPressed_additionShouldEvaluate() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .seven)
+        vm.handleButtonPressed(buttonType: .add)
+        vm.handleButtonPressed(buttonType: .seven)
+        vm.handleButtonPressed(buttonType: .equal)
+        
+        // Then
+        XCTAssertEqual(vm.textInput, "14")
+    }
+    
+    
+    func test_CalculatorViewModel_handleEqualsButtonPressed_mutiplicationShouldEvaluate() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .seven)
+        vm.handleButtonPressed(buttonType: .multiply)
+        vm.handleButtonPressed(buttonType: .seven)
+        vm.handleButtonPressed(buttonType: .equal)
+        
+        // Then
+        XCTAssertEqual(vm.textInput, "49")
+    }
+    
+    func test_CalculatorViewModel_handleEqualsButtonPressed_subtractionShouldEvaluate() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .zero)
+        vm.handleButtonPressed(buttonType: .subtract)
+        vm.handleButtonPressed(buttonType: .three)
+        vm.handleButtonPressed(buttonType: .equal)
+        
+        // Then
+        XCTAssertEqual(vm.textInput, "7")
+    }
+    
+    func test_CalculatorViewModel_handleEqualsButtonPressed_divisionShouldEvaluate() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .zero)
+        vm.handleButtonPressed(buttonType: .zero)
+        vm.handleButtonPressed(buttonType: .divide)
+        vm.handleButtonPressed(buttonType: .two)
+        vm.handleButtonPressed(buttonType: .equal)
+
+        // Then
+        XCTAssertEqual(vm.textInput, "50")
+    }
+    
+    
+    func test_CalculatorViewModel_updateRunningTotal_shouldBeBlank() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .add)
+        
+        // Then
+        XCTAssertEqual(vm.runningTotal, "")
+    }
+    
+    func test_CalculatorViewModel_updateRunningTotal_shouldShowAnswer() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .add)
+        vm.handleButtonPressed(buttonType: .one)
+
+        // Then
+        XCTAssertEqual(vm.runningTotal, "2")
+    }
+    
 }

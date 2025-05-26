@@ -5,6 +5,9 @@
 //  Created by Tomas Sanni on 5/26/25.
 //
 
+// TODO: - Update Calculator to handle large numbers. Use Decimal and add package Swift Numerics package (https://github.com/apple/swift-numerics)
+
+
 import Foundation
 import Expression
 

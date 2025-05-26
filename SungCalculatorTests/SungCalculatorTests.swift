@@ -196,6 +196,25 @@ final class SungCalculatorTests: XCTestCase {
         XCTAssertEqual(vm.textInput, "50")
     }
     
+    func test_CalculatorViewModel_handleEqualsButtonPressed_mixedOperationShouldEvaluate() {
+        // Given
+        guard let vm = viewModel else {
+            XCTFail("Viewmodel is nil")
+            return
+        }
+        
+        // When
+        vm.handleButtonPressed(buttonType: .seven)
+        vm.handleButtonPressed(buttonType: .multiply)
+        vm.handleButtonPressed(buttonType: .eight)
+        vm.handleButtonPressed(buttonType: .add)
+        vm.handleButtonPressed(buttonType: .one)
+        vm.handleButtonPressed(buttonType: .equal)
+
+        // Then
+        XCTAssertEqual(vm.textInput, "57")
+    }
+    
     
     func test_CalculatorViewModel_updateRunningTotal_shouldBeBlank() {
         // Given

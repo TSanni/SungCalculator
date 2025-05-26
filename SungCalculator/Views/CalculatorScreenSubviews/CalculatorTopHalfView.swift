@@ -9,15 +9,19 @@ import SwiftUI
 
 struct CalculatorTopHalfView: View {
     @EnvironmentObject var calculator: CalculatorViewModel
-
+    
     var body: some View {
         VStack(alignment: .trailing) {
-            TextField("Enter text", text: $calculator.textInput)
-                .disabled(true)
-                .multilineTextAlignment(.trailing)
-                .foregroundStyle(.primary)
-                .font(.largeTitle)
-                .padding(.bottom, 30)
+            
+            HStack(spacing: 0) {
+                ForEach(Array(calculator.textInput), id: \.self) { char in
+                    Text(String(char))
+                        .foregroundStyle(char == "+" || char == "-" || char == "×" || char == "÷" || char == "%" ? Color.green : .primary)
+                }
+            }
+            .foregroundStyle(.primary)
+            .font(.largeTitle)
+            .padding(.bottom, 30)
             
             Spacer()
             

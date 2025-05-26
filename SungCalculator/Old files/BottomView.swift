@@ -16,49 +16,49 @@ struct BottomView: View {
         ZStack(alignment: .bottomLeading) {
             VStack {
                 HStack {
-                    ButtonView(buttonType: .clear) { }
+                    OldButtonView(buttonType: .clear) { }
                     Spacer()
-                    ButtonView(buttonType: .squared) { }
+                    OldButtonView(buttonType: .squared) { }
                     Spacer()
-                    ButtonView(buttonType: .percent) { }
+                    OldButtonView(buttonType: .percent) { }
                     Spacer()
-                    ButtonView(buttonType: .divide) { }
+                    OldButtonView(buttonType: .divide) { }
                 }
                 HStack {
-                    ButtonView(buttonType: .seven) { }
+                    OldButtonView(buttonType: .seven) { }
                     Spacer()
-                    ButtonView(buttonType: .eight) { }
+                    OldButtonView(buttonType: .eight) { }
                     Spacer()
-                    ButtonView(buttonType: .nine) { }
+                    OldButtonView(buttonType: .nine) { }
                     Spacer()
-                    ButtonView(buttonType: .multiply) { }
+                    OldButtonView(buttonType: .multiply) { }
                 }
                 HStack {
-                    ButtonView(buttonType: .four) { }
+                    OldButtonView(buttonType: .four) { }
                     Spacer()
-                    ButtonView(buttonType: .five) { }
+                    OldButtonView(buttonType: .five) { }
                     Spacer()
-                    ButtonView(buttonType: .six) { }
+                    OldButtonView(buttonType: .six) { }
                     Spacer()
-                    ButtonView(buttonType: .subtract) { }
+                    OldButtonView(buttonType: .subtract) { }
                 }
                 HStack {
-                    ButtonView(buttonType: .one) { }
+                    OldButtonView(buttonType: .one) { }
                     Spacer()
-                    ButtonView(buttonType: .two) { }
+                    OldButtonView(buttonType: .two) { }
                     Spacer()
-                    ButtonView(buttonType: .three) { }
+                    OldButtonView(buttonType: .three) { }
                     Spacer()
-                    ButtonView(buttonType: .add) { }
+                    OldButtonView(buttonType: .add) { }
                 }
                 HStack {
-                    ButtonView(buttonType: .negative) { }
+                    OldButtonView(buttonType: .negative) { }
                     Spacer()
-                    ButtonView(buttonType: .zero) { }
+                    OldButtonView(buttonType: .zero) { }
                     Spacer()
-                    ButtonView(buttonType: .decimal) { }
+                    OldButtonView(buttonType: .decimal) { }
                     Spacer()
-                    ButtonView(buttonType: .equal) { }
+                    OldButtonView(buttonType: .equal) { }
                 }
             }
             .padding(.top)

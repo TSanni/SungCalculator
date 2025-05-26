@@ -8,180 +8,12 @@
 import SwiftUI
 import Expression
 
-class Calculator: ObservableObject {
-    @Published var textInput = ""
-    @Published var runningTotal = ""
-    @Published var showError = false
-    var arrayOfButtonTypes: [ButtonType] = []
-//    var lastButtonInputIsInt = false
-    
-    static let shared = Calculator()
-    
-    private init() { }
-    
-    private func handleDeleteButtonPressed() {
-        print(#function)
-        if textInput.isEmpty { return }
-        
-        textInput.removeLast()
-        arrayOfButtonTypes.removeLast()
-        
-//        guard let lastInput = arrayOfButtonTypes.last else {
-//            print("Empty array")
-//            return
-//        }
-        
-//        if lastInput.isInt {
-//            lastButtonInputIsInt = true
-//        } else {
-//            lastButtonInputIsInt = false
-//        }
-    }
-    
-    private func handleClearButtonPressed() {
-        print(#function)
-        textInput.removeAll()
-        runningTotal.removeAll()
-        arrayOfButtonTypes.removeAll()
-//        lastButtonInputIsInt = false
-    }
-    
-    private func handleOperationButtonPressed(buttonType: ButtonType) {
-        if textInput.isEmpty { return }
-
-        guard let lastCharacter = arrayOfButtonTypes.last else { return }
-        
-        if lastCharacter.isOperation {
-            textInput.removeLast()
-            arrayOfButtonTypes.removeLast()
-            
-            textInput.append(buttonType.rawValue)
-            arrayOfButtonTypes.append(buttonType)
-        } else {
-            textInput.append(buttonType.rawValue)
-            arrayOfButtonTypes.append(buttonType)
-        }
-        
-//        lastButtonInputIsInt = false
-    }
-    
-    // TODO: - Add more cases
-    private func handleDecimalButtonPressed(buttonType: ButtonType) {
-        // Ex) ""
-        if textInput.isEmpty && arrayOfButtonTypes.isEmpty {
-            textInput.append("0.")
-            arrayOfButtonTypes.append(.zero)
-            arrayOfButtonTypes.append(.decimal)
-//            lastButtonInputIsInt = false
-        }
-        
-        // Ex) 2.
-        if textInput.last == "." && arrayOfButtonTypes.last == .decimal {
-            return
-        }
-        
-        // Ex) 2.5
-        
-        
-        
-        textInput.append(".")
-        arrayOfButtonTypes.append(.decimal)
-        
-    }
-    
-    private func handleIntButtonPressed(buttonType: ButtonType) {
-        
-        let lastInput = arrayOfButtonTypes.last
-        
-        if lastInput == .zero && buttonType == .zero && arrayOfButtonTypes.count <= 1{
-            return
-        }
-        
-        textInput.append(buttonType.rawValue)
-        arrayOfButtonTypes.append(buttonType)
-//        lastButtonInputIsInt = true
-    }
-    
-    private func handlePercentButtonPressed(buttonType: ButtonType) {
-        
-    }
-    
-    private func handleSquaredButtonPressed(buttonType: ButtonType) {
-        
-    }
-    
-    private func handleNegativeButtonPressed(buttonType: ButtonType) {
-        
-    }
-    
-    private func handleEqualsButtonPressed(buttonType: ButtonType) {
-        let expression = Expression(textInput)
-        do {
-            let result = try expression.evaluate()
-            textInput = result.description
-        } catch  {
-           // let errorMessage = "Invalid format used"
-            showError = true
-        }
-    }
-    
-    private func updateRunningTotal() {
-        let textInputCompatibleWithExpression = textInput
-            .replacingOccurrences(of: ButtonType.multiply.rawValue, with: "*")
-            .replacingOccurrences(of: ButtonType.divide.rawValue, with: "/")
-        
-        let expression = Expression(textInputCompatibleWithExpression)
-        do {
-            let result = try expression.evaluate()
-            runningTotal = result.description
-        } catch {
-            let errorMessage = ""
-            runningTotal = errorMessage
-        }
-    }
-    
-    func handleButtonPressed(buttonType: ButtonType) {
-        switch buttonType {
-        case .clear:
-            handleClearButtonPressed()
-        case .squared:
-            handleSquaredButtonPressed(buttonType: buttonType)
-        case .percent:
-            handlePercentButtonPressed(buttonType: buttonType)
-        case .divide:
-            handleOperationButtonPressed(buttonType: buttonType)
-        case .multiply:
-            handleOperationButtonPressed(buttonType: buttonType)
-        case .subtract:
-            handleOperationButtonPressed(buttonType: buttonType)
-        case .add:
-            handleOperationButtonPressed(buttonType: buttonType)
-        case .decimal:
-            handleDecimalButtonPressed(buttonType: buttonType)
-        case .negative:
-            handleNegativeButtonPressed(buttonType: buttonType)
-        case .equal:
-            handleEqualsButtonPressed(buttonType: buttonType)
-//        case .historyButton:
-//            <#code#>
-//        case .rulerButton:
-//            <#code#>
-//        case .squareRootButton:
-//            <#code#>
-        case .deleteButton:
-            handleDeleteButtonPressed()
-            
-        default:
-            handleIntButtonPressed(buttonType: buttonType)
-        }
-        
-        updateRunningTotal()
-    }
-}
-
 struct MainScreen: View {
-    @StateObject var calculator: Calculator = Calculator.shared
+    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var persistence: PersistenceController
     @State private var showToastAlert = false
+    @Environment(\.colorScheme) var colorScheme
+
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 4)
     
     private let buttonLayout: [ButtonType] = [
@@ -217,7 +49,9 @@ struct MainScreen: View {
                         HStack {
                             HStack(spacing: 50) {
                                 Button {
-                                    
+                                    withAnimation {
+                                        calculator.toggleHistoryView()
+                                    }
                                 } label: {
                                     Image(systemName: "clock")
                                 }
@@ -251,12 +85,25 @@ struct MainScreen: View {
                     Divider()
                         .padding(.vertical)
                     
-                    LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(buttonLayout, id: \.self) { type in
-                            ButtonView2(buttonType: type, geoProxy: geo)
+                    ZStack(alignment: .leading) {
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(buttonLayout, id: \.self) { type in
+                                ButtonView(buttonType: type, geoProxy: geo)
+                            }
                         }
+                        
+                        if calculator.showHistoryView {
+                            HistoryView()
+                                .frame(width: geo.size.width * 0.8)
+                                .frame(maxHeight: .infinity)
+                                .background {
+                                    colorScheme == .dark ? Color.black : Color.white
+                                }
+                                .transition(AnyTransition.move(edge: .leading))
+                                .zIndex(1)
+                        }
+
                     }
-                    .environmentObject(calculator)
                 }
                 
                 if showToastAlert {
@@ -264,7 +111,6 @@ struct MainScreen: View {
                         .offset(y: -40)
                         .zIndex(1)
                 }
-
             }
             .onReceive(calculator.$showError) { show in
                 if show {
@@ -285,36 +131,6 @@ struct MainScreen: View {
     }
 }
 
-
-struct ButtonView2: View {
-    @EnvironmentObject var calculator: Calculator
-    @Environment(\.colorScheme) var colorScheme
-    var buttonType: ButtonType
-    let haptics = UINotificationFeedbackGenerator()
-    let geoProxy: GeometryProxy
-    
-    var body: some View {
-        Button {
-            self.haptics.notificationOccurred(.success)
-            calculator.handleButtonPressed(buttonType: buttonType)
-        } label: {
-            Text(buttonType.rawValue)
-                .foregroundColor(buttonType.getForegroundColor)
-                .frame(width: geoProxy.size.width * 0.12, height: geoProxy.size.width * 0.12)
-                .padding()
-                .background {
-                    if buttonType == .equal {
-                        Circle().fill(Color.green)
-                    } else {
-                        colorScheme == .light ? Circle().fill(.gray.opacity(0.1)) : Circle().fill(Color.goodBlack)
-                    }
-                }
-        }
-        .buttonStyle(CircleButton())
-    }
-}
-
-
 struct ToastAlert: View {
     var body: some View {
         Text("Invalid format used.")
@@ -329,4 +145,6 @@ struct ToastAlert: View {
 
 #Preview {
     MainScreen()
+        .environmentObject(Calculator.shared)
+        .environmentObject(PersistenceController.shared)
 }

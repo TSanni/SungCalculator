@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct SungCalculatorApp: App {
-    @StateObject var calculator: Calculator = Calculator.shared
+    @StateObject var calculator: CalculatorViewModel = CalculatorViewModel.shared
     @StateObject var persistence = PersistenceController.shared
 
     var body: some Scene {

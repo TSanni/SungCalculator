@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CalculatorTopHalfView: View {
-    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var calculator: CalculatorViewModel
 
     var body: some View {
         VStack(alignment: .trailing) {
@@ -68,6 +68,6 @@ struct CalculatorTopHalfView: View {
 
 #Preview {
     CalculatorTopHalfView()
-        .environmentObject(Calculator.shared)
+        .environmentObject(CalculatorViewModel.shared)
 
 }

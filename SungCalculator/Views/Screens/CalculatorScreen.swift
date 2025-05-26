@@ -9,7 +9,7 @@ import SwiftUI
 import Expression
 
 struct CalculatorScreen: View {
-    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var calculator: CalculatorViewModel
     @EnvironmentObject var persistence: PersistenceController
     @State private var showToastAlert = false
 
@@ -56,6 +56,6 @@ struct CalculatorScreen: View {
 
 #Preview {
     CalculatorScreen()
-        .environmentObject(Calculator.shared)
+        .environmentObject(CalculatorViewModel.shared)
         .environmentObject(PersistenceController.shared)
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CalculatorBottomHalfView: View {
-    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var calculator: CalculatorViewModel
     @Environment(\.colorScheme) var colorScheme
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 4)
     let geo: GeometryProxy
@@ -46,7 +46,7 @@ struct CalculatorBottomHalfView: View {
 #Preview {
     GeometryReader { geo in
         CalculatorBottomHalfView(geo: geo)
-            .environmentObject(Calculator.shared)
+            .environmentObject(CalculatorViewModel.shared)
 
     }
 }

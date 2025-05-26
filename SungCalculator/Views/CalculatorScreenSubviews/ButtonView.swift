@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ButtonView: View {
-    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var calculator: CalculatorViewModel
     @Environment(\.colorScheme) var colorScheme
     var buttonType: ButtonType
     let haptics = UINotificationFeedbackGenerator()

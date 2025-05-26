@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HistoryView: View {
-    @EnvironmentObject var calculator: Calculator
+    @EnvironmentObject var calculator: CalculatorViewModel
     @EnvironmentObject var persistence: PersistenceController
     @Environment(\.colorScheme) var colorScheme
     
@@ -64,7 +64,7 @@ struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
         HistoryView()
             .previewDevice("iPhone 11 Pro Max")
-            .environmentObject(Calculator.shared)
+            .environmentObject(CalculatorViewModel.shared)
             .environmentObject(PersistenceController.shared)
         
     }

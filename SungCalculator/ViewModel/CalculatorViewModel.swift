@@ -14,7 +14,6 @@ class CalculatorViewModel: ObservableObject {
     @Published var showError = false
     @Published var showHistoryView = false
     var arrayOfButtonTypes: [ButtonType] = []
-//    var lastButtonInputIsInt = false
     let persistence = PersistenceController.shared
 
     static let shared = CalculatorViewModel()

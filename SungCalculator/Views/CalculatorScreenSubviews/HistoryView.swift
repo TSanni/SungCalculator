@@ -44,7 +44,7 @@ struct HistoryView: View {
                 withAnimation {
                     calculator.toggleHistoryView()
                 }
-                persistence.deleteFruit()
+                persistence.deleteCalculationHistory()
             } label: {
                 Text("Clear History")
                     .foregroundColor(colorScheme == .dark ? .white : .black)

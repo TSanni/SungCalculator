@@ -23,10 +23,10 @@ class PersistenceController: ObservableObject {
             }
             self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         }
-        fetchFruits()
+        fetchCalculationHistory()
     }
     
-    func fetchFruits() {
+    func fetchCalculationHistory() {
         let request = NSFetchRequest<History>(entityName: "History")
         request.sortDescriptors = [NSSortDescriptor(key: "dateAdded", ascending: true)]
 
@@ -37,7 +37,7 @@ class PersistenceController: ObservableObject {
         }
     }
     
-    func addFruit(entry: String, result: String) {
+    func addCalculation(entry: String, result: String) {
         let historyObject = History(context: container.viewContext)
         historyObject.dateAdded = Date.now
         historyObject.result = result
@@ -52,7 +52,7 @@ class PersistenceController: ObservableObject {
 //        saveData()
 //    }
     
-    func deleteFruit() {
+    func deleteCalculationHistory() {
         for i in savedEntities {
             container.viewContext.delete(i)
         }
@@ -62,7 +62,7 @@ class PersistenceController: ObservableObject {
     func saveData() {
         do {
             try container.viewContext.save()
-            fetchFruits()
+            fetchCalculationHistory()
         } catch let error {
             print("Error saving. \(error)")
         }

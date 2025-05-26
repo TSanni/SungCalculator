@@ -117,10 +117,10 @@ class Calculator: ObservableObject {
         do {
             let result = try expression.evaluate()
             if result.truncatingRemainder(dividingBy: 1) == 0 {
-                persistence.addFruit(entry: textInput, result: String(Int(result)))
+                persistence.addCalculation(entry: textInput, result: String(Int(result)))
                 textInput = String(Int(result))
             } else {
-                persistence.addFruit(entry: textInput, result: result.description)
+                persistence.addCalculation(entry: textInput, result: result.description)
                 textInput = result.description
 
             }

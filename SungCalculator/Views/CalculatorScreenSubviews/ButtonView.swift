@@ -35,6 +35,20 @@ struct ButtonView: View {
     }
 }
 
+struct CircleButton: ButtonStyle {
+    @Environment(\.colorScheme) var colorScheme
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(configuration.isPressed ? .title : .largeTitle)
+            .font(.largeTitle)
+            .overlay {
+                Circle()
+                    .fill(colorScheme == .dark ? .white.opacity(configuration.isPressed ? 0.5 : 0) : .gray.opacity(configuration.isPressed ? 0.5 : 0))
+            }
+    }
+}
+
 
 #Preview {
     GeometryReader { geo in

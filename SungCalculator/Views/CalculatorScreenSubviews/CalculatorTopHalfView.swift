@@ -13,18 +13,18 @@ struct CalculatorTopHalfView: View {
     var body: some View {
         VStack(alignment: .trailing) {
             TextField("Enter text", text: $calculator.textInput)
+                .disabled(true)
                 .multilineTextAlignment(.trailing)
                 .foregroundStyle(.primary)
-                .disabled(true)
                 .font(.largeTitle)
                 .padding(.bottom, 30)
             
             Spacer()
             
-            TextField("Running total/answer", text: $calculator.runningTotal)
+            TextField("", text: $calculator.runningTotal)
+                .disabled(true)
                 .multilineTextAlignment(.trailing)
                 .foregroundStyle(.secondary)
-                .disabled(true)
                 .font(.title2)
                 .padding(.bottom, 30)
             

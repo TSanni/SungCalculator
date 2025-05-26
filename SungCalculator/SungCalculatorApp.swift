@@ -14,7 +14,7 @@ struct SungCalculatorApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainScreen()
+            CalculatorScreen()
                 .environmentObject(calculator)
                 .environmentObject(persistence)
         }

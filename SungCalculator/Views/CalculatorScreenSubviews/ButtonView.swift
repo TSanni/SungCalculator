@@ -36,6 +36,9 @@ struct ButtonView: View {
 }
 
 
-//#Preview {
-//    ButtonView(buttonType: .add, geoProxy: <#GeometryProxy#>)
-//}
+#Preview {
+    GeometryReader { geo in
+        ButtonView(buttonType: .add, geoProxy: geo)
+
+    }
+}

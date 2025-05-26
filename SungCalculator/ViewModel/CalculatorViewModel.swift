@@ -14,11 +14,13 @@ class CalculatorViewModel: ObservableObject {
     @Published var showError = false
     @Published var showHistoryView = false
     var arrayOfButtonTypes: [ButtonType] = []
-    let persistence = PersistenceController.shared
+    let persistence: PersistenceController
 
-    static let shared = CalculatorViewModel()
-    
-    private init() { }
+    static let shared = CalculatorViewModel(persistence: PersistenceController.shared)
+
+    init(persistence: PersistenceController = PersistenceController.shared) {
+        self.persistence = persistence
+    }
     
     func toggleHistoryView() {
         showHistoryView.toggle()

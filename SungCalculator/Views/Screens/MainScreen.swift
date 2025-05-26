@@ -6,15 +6,134 @@
 //
 
 import SwiftUI
-import MathParser
 class Calculator: ObservableObject {
-    @Published var textInput = "textInput"
-    @Published var runningTotal = "runningTotal"
+    @Published var textInput = ""
+    @Published var runningTotal = ""
+    var arrayOfButtonTypes: [ButtonType] = []
+    var lastButtonInputIsInt = false
     
     static let shared = Calculator()
     
     private init() { }
     
+    private func handleDeleteButtonPressed() {
+        print(#function)
+        if textInput.isEmpty { return }
+        
+        textInput.removeLast()
+        arrayOfButtonTypes.removeLast()
+        
+        guard let lastInput = arrayOfButtonTypes.last else {
+            print("Empty array")
+            return
+        }
+        
+        if lastInput.isInt {
+            lastButtonInputIsInt = true
+        } else {
+            lastButtonInputIsInt = false
+        }
+    }
+    
+    private func handleClearButtonPressed() {
+        print(#function)
+        textInput.removeAll()
+        arrayOfButtonTypes.removeAll()
+        lastButtonInputIsInt = false
+    }
+    
+    private func handleOperationButtonPressed(buttonType: ButtonType) {
+        if textInput.isEmpty { return }
+
+        guard let lastCharacter = arrayOfButtonTypes.last else { return }
+        
+        if lastCharacter.isOperation {
+            textInput.removeLast()
+            arrayOfButtonTypes.removeLast()
+            
+            textInput.append(buttonType.rawValue)
+            arrayOfButtonTypes.append(buttonType)
+        } else {
+            textInput.append(buttonType.rawValue)
+            arrayOfButtonTypes.append(buttonType)
+        }
+        
+        lastButtonInputIsInt = false
+    }
+    
+    
+    // TODO: - Add more cases
+    private func handleDecimalButtonPressed(buttonType: ButtonType) {
+        // Ex) ""
+        if textInput.isEmpty && arrayOfButtonTypes.isEmpty {
+            textInput.append("0.")
+            arrayOfButtonTypes.append(.zero)
+            arrayOfButtonTypes.append(.decimal)
+            lastButtonInputIsInt = false
+        }
+        
+        // Ex) 2.
+        if textInput.last == "." && arrayOfButtonTypes.last == .decimal {
+            return
+        }
+        
+        // Ex) 2.5
+        
+        
+        
+        textInput.append(".")
+        arrayOfButtonTypes.append(.decimal)
+        
+    }
+    
+    private func handleIntButtonPressed(buttonType: ButtonType) {
+        
+        let lastInput = arrayOfButtonTypes.last
+        
+        if lastInput == .zero && buttonType == .zero && arrayOfButtonTypes.count <= 1{
+            return
+        }
+        
+        textInput.append(buttonType.rawValue)
+        arrayOfButtonTypes.append(buttonType)
+        lastButtonInputIsInt = true
+    }
+    
+    func handleButtonType(buttonType: ButtonType) {
+        switch buttonType {
+        case .clear:
+            handleClearButtonPressed()
+//        case .squared:
+//            <#code#>
+//        case .percent:
+//            <#code#>
+        case .divide:
+            handleOperationButtonPressed(buttonType: buttonType)
+        case .multiply:
+            handleOperationButtonPressed(buttonType: buttonType)
+        case .subtract:
+            handleOperationButtonPressed(buttonType: buttonType)
+        case .add:
+            handleOperationButtonPressed(buttonType: buttonType)
+        case .decimal:
+            handleDecimalButtonPressed(buttonType: buttonType)
+//        case .negative:
+//            <#code#>
+//        case .equal:
+//            <#code#>
+//        case .historyButton:
+//            <#code#>
+//        case .rulerButton:
+//            <#code#>
+//        case .squareRootButton:
+//            <#code#>
+        case .deleteButton:
+            handleDeleteButtonPressed()
+            
+        default:
+            handleIntButtonPressed(buttonType: buttonType)
+        }
+    }
 }
 
 struct MainScreen: View {
@@ -74,7 +193,7 @@ struct MainScreen: View {
                         Spacer()
                         
                         Button {
-                            
+                            calculator.handleButtonType(buttonType: .deleteButton)
                         } label: {
                             Image(systemName: "delete.backward")
                         }
@@ -110,6 +229,7 @@ struct ButtonView2: View {
     var body: some View {
         Button {
             self.haptics.notificationOccurred(.success)
+            calculator.handleButtonType(buttonType: buttonType)
         } label: {
             Text(buttonType.rawValue)
                 .foregroundColor(buttonType.getForegroundColor)

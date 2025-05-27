@@ -13,10 +13,20 @@ struct CalculatorTopHalfView: View {
     var body: some View {
         VStack(alignment: .trailing) {
             
-            Text(highlightSymbols(in: calculator.textInput))
-                .foregroundStyle(.primary)
-                .font(.largeTitle)
-                .padding(.bottom, 30)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    Text(highlightSymbols(in: calculator.textInput))
+                        .foregroundStyle(.primary)
+                        .font(.largeTitle)
+                        .padding(.bottom, 30)
+                        .id("bottom")
+                }
+                .onChange(of: calculator.textInput) { _ in
+                    withAnimation {
+                        proxy.scrollTo("bottom", anchor: .bottom)
+                    }
+                }
+            }
             
             Spacer()
             

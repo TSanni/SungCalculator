@@ -13,21 +13,14 @@ struct CalculatorTopHalfView: View {
     var body: some View {
         VStack(alignment: .trailing) {
             
-            HStack(spacing: 0) {
-                ForEach(Array(calculator.textInput), id: \.self) { char in
-                    Text(String(char))
-                        .foregroundStyle(char == "+" || char == "-" || char == "×" || char == "÷" || char == "%" ? Color.green : .primary)
-                }
-            }
-            .foregroundStyle(.primary)
-            .font(.largeTitle)
-            .padding(.bottom, 30)
+            Text(highlightSymbols(in: calculator.textInput))
+                .foregroundStyle(.primary)
+                .font(.largeTitle)
+                .padding(.bottom, 30)
             
             Spacer()
             
-            TextField("", text: $calculator.runningTotal)
-                .disabled(true)
-                .multilineTextAlignment(.trailing)
+            Text(calculator.runningTotal)
                 .foregroundStyle(.secondary)
                 .font(.title2)
                 .padding(.bottom, 30)
@@ -67,6 +60,23 @@ struct CalculatorTopHalfView: View {
             .tint(.secondary)
             .font(.title2)
         }
+    }
+    
+    
+    private func highlightSymbols(in input: String) -> AttributedString {
+        var attributed = AttributedString(input)
+
+        for (i, char) in input.enumerated() {
+            if char == "+" || char == "-" || char == "×" || char == "÷" || char == "%" {
+                // Use String.Index to find range
+                let nsRange = NSRange(location: i, length: 1)
+                if let range = Range(nsRange, in: attributed) {
+                    attributed[range].foregroundColor = .green
+                }
+            }
+        }
+
+        return attributed
     }
 }
 

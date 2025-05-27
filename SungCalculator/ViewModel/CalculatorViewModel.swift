@@ -144,9 +144,18 @@ class CalculatorViewModel: ObservableObject {
         let expression = Expression(textInputCompatibleWithExpression)
         do {
             let result = try expression.evaluate()
+            
+            // if the result is an integer
             if result.truncatingRemainder(dividingBy: 1) == 0 {
-                runningTotal = String(Int(result))
-            } else {
+                // if result is greater than .. do not format
+                if result > 10000000000000000 {
+                    runningTotal = result.description
+                } else { // else format for no floating points
+                    let formatted = String(format: "%.0f", result)
+                    runningTotal = formatted
+                }
+
+            } else { // set total to result
                 runningTotal = result.description
             }
         } catch {
